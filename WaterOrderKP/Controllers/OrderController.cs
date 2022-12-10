@@ -70,14 +70,31 @@ namespace WaterOrderKP.Controllers
         public ActionResult Edit(int id)
         {
             var oder = orders.FirstOrDefault(x => x.Id == id);
+        
             return View(oder);
         }
 
         // POST: OrderController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public ActionResult Edit(int id, EditOrderItemModel model)
         {
+            var order = orders?.FirstOrDefault(x => x.Id == id);
+
+            if (order != null)
+            {
+                order.Address = model.Address;
+                order.PhoneNumber = model.PhoneNumber;
+                order.Comment = model.Comment;
+                order.OrderDate = model.OrderDate;
+                order.CountBottle = model.CountBottle;
+                order.Name = model.Name;
+            }
+            else
+            {
+                return BadRequest();
+            }
+
             try
             {
                 return RedirectToAction(nameof(Index));
