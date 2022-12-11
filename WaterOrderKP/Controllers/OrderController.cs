@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.VisualBasic.FileIO;
 using WaterOrderKP.Models;
 
 namespace WaterOrderKP.Controllers
@@ -55,7 +56,7 @@ namespace WaterOrderKP.Controllers
         {
             try
             {
-                var id = orders.Max(item => item.Id) + 1;
+                var id = orders.Any() ? orders.Max(item => item.Id) + 1 : 1;
                 item.Id = id;
                 orders.Add(item);
                 return RedirectToAction(nameof(Index));
@@ -108,7 +109,8 @@ namespace WaterOrderKP.Controllers
         // GET: OrderController/Delete/5
         public ActionResult Delete(int id)
         {
-            return View();
+            var deletedOrder = orders.FirstOrDefault(order => order.Id == id);
+            return View(deletedOrder);
         }
 
         // POST: OrderController/Delete/5
@@ -116,6 +118,13 @@ namespace WaterOrderKP.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Delete(int id, IFormCollection collection)
         {
+            var deletedOrder = orders.FirstOrDefault(order => order.Id == id);
+
+            if (deletedOrder != null)
+            {
+                orders.Remove(deletedOrder);
+            }
+
             try
             {
                 return RedirectToAction(nameof(Index));
