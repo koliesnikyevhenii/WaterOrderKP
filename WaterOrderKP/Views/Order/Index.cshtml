@@ -34,7 +34,11 @@
                 @Html.DisplayNameFor(model => model.Comment)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.CountBottle)
+                <a href="javascript:void(0);" id="bottleCount" onclick="sortBottles()">
+                    Count Bottle
+                    <span class="arrow-down" id="arrow-element"></span>
+                </a>
+               
             </th>
             <th></th>
         </tr>
@@ -77,3 +81,7 @@
 
     </tbody>
 </table>
+<br/>
+<br/>
+
+@Html.Partial("~/Views/Partials/Statisctics.cshtml")

@@ -1,0 +1,14 @@
+.arrow-down:before {
+    content: "\25bc";
+    padding-left: -0.5em;
+}
+
+
+.arrow-up:before {
+    content: "\25b2";
+    padding-left: -0.5em;
+}
+
+#bottleCount {
+    text-decoration: none;
+}

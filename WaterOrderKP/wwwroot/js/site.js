@@ -1,4 +1,14 @@
-﻿// Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
-// for details on configuring this project to bundle and minify static web assets.
+﻿function sortBottles() {
+    var element = document.getElementById('arrow-element');
+    var isArrowDown = element.classList.contains('arrow-down');
 
-// Write your JavaScript code.
+    if (isArrowDown) {
+        
+        element.classList.remove("arrow-down");
+        element.classList.add("arrow-up");
+    }
+    else {
+        element.classList.remove("arrow-up");
+        element.classList.add("arrow-down");
+    }
+}

@@ -18,6 +18,36 @@ namespace WaterOrderKP.Controllers
                 PhoneNumber = "0994285796",
                 Id= 1
             },
+                 new OrderItem
+            {
+                Address = "Krasompavlivka 5/32",
+                Comment = "Till 11 morning",
+                CountBottle = 2,
+                Name = "Pavel Shulhenko",
+                OrderDate = DateTime.Now,
+                PhoneNumber = "0964783796",
+                Id= 2
+            },
+                      new OrderItem
+            {
+                Address = "Krasompavlivka 6/44",
+                Comment = "Till 13 morning",
+                CountBottle = 2,
+                Name = "Viktor Tulik",
+                OrderDate = DateTime.Now,
+                PhoneNumber = "0996587766",
+                Id= 3
+            },
+                           new OrderItem
+            {
+                Address = "Krasompavlivka 10/4",
+                Comment = "Till 10 morning",
+                CountBottle = 2,
+                Name = "Yevhenii Koliesnik",
+                OrderDate = DateTime.Now,
+                PhoneNumber = "0994285796",
+                Id= 4
+            },
 
               new OrderItem
               {
@@ -27,7 +57,7 @@ namespace WaterOrderKP.Controllers
                   Name = "Pupkin Mikhail",
                   OrderDate = DateTime.Now,
                   PhoneNumber = "0453567796",
-                  Id = 2
+                  Id = 5
               }};
 
         // GET: OrderController
