@@ -54,6 +54,11 @@ namespace WaterOrderKP.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(OrderItem item)
         {
+            if (!ModelState.IsValid)
+            {
+                return View(item);
+            }
+            
             try
             {
                 var id = orders.Any() ? orders.Max(item => item.Id) + 1 : 1;
