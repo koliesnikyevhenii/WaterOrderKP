@@ -1,4 +1,5 @@
 ﻿function sortBottles() {
+
     var element = document.getElementById('arrow-element');
     var isArrowDown = element.classList.contains('arrow-down');
 
@@ -11,4 +12,19 @@
         element.classList.remove("arrow-up");
         element.classList.add("arrow-down");
     }
+
+    $.ajax({
+        url: '/order/index?isAjax=true&orderBy=countbottle&desc='+isArrowDown,
+       // data: itemsData,
+        success: function (result) {
+            $('#indexTable').html(result);
+        },
+        complete: function () {
+            
+        }
+    });
+
+    // get response
+
+    // update block on page
 }

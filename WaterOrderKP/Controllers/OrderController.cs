@@ -11,7 +11,7 @@ namespace WaterOrderKP.Controllers
 
         public OrderController()
         {
-            for (int i = 0; i < 50; i++)
+            for (int i = 0; i < 15; i++)
             {
                 var orderItem = new OrderItem
                 {
@@ -21,7 +21,7 @@ namespace WaterOrderKP.Controllers
                     Name = Faker.Name.FullName(),
                     OrderDate = new DateTime(2022, 12, Faker.RandomNumber.Next(1, 30)).ToShortDateString(),
                     PhoneNumber = "0994285796",
-                    Id = i+1
+                    Id = i + 1
                 };
 
                 orders.Add(orderItem);
@@ -29,15 +29,29 @@ namespace WaterOrderKP.Controllers
         }
 
         // GET: OrderController
-        public ActionResult Index()
+        public ActionResult Index(bool isAjax = false, string orderBy = "countbottle", bool desc = false)
         {
-            return View(orders);
+            var filteredOrders = orders;
+
+            if (orderBy == "countbottle")
+            {
+
+                filteredOrders = desc ? orders.OrderBy(order => order.CountBottle).ToList() 
+                    : orders.OrderByDescending(order => order.CountBottle).ToList();
+            }
+
+            if (isAjax)
+            {
+                return View("~/Views/Partials/IndexTable.cshtml", filteredOrders);
+            }
+          
+            return View(filteredOrders);
         }
 
         // GET: OrderController/Details/5
         public ActionResult Details(int id)
         {
-            var oder = orders.FirstOrDefault(x=>x.Id == id);
+            var oder = orders.FirstOrDefault(x => x.Id == id);
             return View(oder);
         }
 
@@ -56,7 +70,7 @@ namespace WaterOrderKP.Controllers
             {
                 return View(item);
             }
-            
+
             try
             {
                 var id = orders.Any() ? orders.Max(item => item.Id) + 1 : 1;
@@ -74,7 +88,7 @@ namespace WaterOrderKP.Controllers
         public ActionResult Edit(int id)
         {
             var oder = orders.FirstOrDefault(x => x.Id == id);
-        
+
             return View(oder);
         }
 
