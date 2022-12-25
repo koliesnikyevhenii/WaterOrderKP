@@ -8,7 +8,7 @@ namespace WaterOrderKP.Models
         public int Id { get; set; }
 
         [Display(Name = "Order Date")]
-        public DateTime OrderDate { get; set; }
+        public string OrderDate { get; set; }
 
         [StringLength(70, ErrorMessage = "Name length can't be more than 70.")]
         public string Name { get; set; }

@@ -7,58 +7,26 @@ namespace WaterOrderKP.Controllers
 {
     public class OrderController : Controller
     {
-        public static List<OrderItem> orders = new List<OrderItem> {
-            new OrderItem
-            {
-                Address = "Krasompavlivka 10/4",
-                Comment = "Till 10 morning",
-                CountBottle = 2,
-                Name = "Yevhenii Koliesnik",
-                OrderDate = DateTime.Now,
-                PhoneNumber = "0994285796",
-                Id= 1
-            },
-                 new OrderItem
-            {
-                Address = "Krasompavlivka 5/32",
-                Comment = "Till 11 morning",
-                CountBottle = 2,
-                Name = "Pavel Shulhenko",
-                OrderDate = DateTime.Now,
-                PhoneNumber = "0964783796",
-                Id= 2
-            },
-                      new OrderItem
-            {
-                Address = "Krasompavlivka 6/44",
-                Comment = "Till 13 morning",
-                CountBottle = 2,
-                Name = "Viktor Tulik",
-                OrderDate = DateTime.Now,
-                PhoneNumber = "0996587766",
-                Id= 3
-            },
-                           new OrderItem
-            {
-                Address = "Krasompavlivka 10/4",
-                Comment = "Till 10 morning",
-                CountBottle = 2,
-                Name = "Yevhenii Koliesnik",
-                OrderDate = DateTime.Now,
-                PhoneNumber = "0994285796",
-                Id= 4
-            },
+        public static List<OrderItem> orders = new List<OrderItem>();
 
-              new OrderItem
-              {
-                  Address = "Panutino 20",
-                  Comment = "Till 9 morning",
-                  CountBottle = 5,
-                  Name = "Pupkin Mikhail",
-                  OrderDate = DateTime.Now,
-                  PhoneNumber = "0453567796",
-                  Id = 5
-              }};
+        public OrderController()
+        {
+            for (int i = 0; i < 50; i++)
+            {
+                var orderItem = new OrderItem
+                {
+                    Address = Faker.Address.StreetAddress(true),
+                    Comment = Faker.Lorem.Sentence(),
+                    CountBottle = Faker.RandomNumber.Next(1, 20),
+                    Name = Faker.Name.FullName(),
+                    OrderDate = new DateTime(2022, 12, Faker.RandomNumber.Next(1, 30)).ToShortDateString(),
+                    PhoneNumber = "0994285796",
+                    Id = i+1
+                };
+
+                orders.Add(orderItem);
+            }
+        }
 
         // GET: OrderController
         public ActionResult Index()
@@ -122,7 +90,7 @@ namespace WaterOrderKP.Controllers
                 order.Address = model.Address;
                 order.PhoneNumber = model.PhoneNumber;
                 order.Comment = model.Comment;
-                order.OrderDate = model.OrderDate;
+                order.OrderDate = model.OrderDate.ToShortDateString();
                 order.CountBottle = model.CountBottle;
                 order.Name = model.Name;
             }
