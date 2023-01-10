@@ -11,20 +11,23 @@ namespace WaterOrderKP.Controllers
 
         public OrderController()
         {
-            for (int i = 0; i < 15; i++)
+            if (!orders.Any())
             {
-                var orderItem = new OrderItem
+                for (int i = 0; i < 15; i++)
                 {
-                    Address = Faker.Address.StreetAddress(true),
-                    Comment = Faker.Lorem.Sentence(),
-                    CountBottle = Faker.RandomNumber.Next(1, 20),
-                    Name = Faker.Name.FullName(),
-                    OrderDate = new DateTime(2022, 12, Faker.RandomNumber.Next(1, 30)).ToShortDateString(),
-                    PhoneNumber = "0994285796",
-                    Id = i + 1
-                };
+                    var orderItem = new OrderItem
+                    {
+                        Address = Faker.Address.StreetAddress(true),
+                        Comment = Faker.Lorem.Sentence(),
+                        CountBottle = Faker.RandomNumber.Next(1, 20),
+                        Name = Faker.Name.FullName(),
+                        OrderDate = new DateTime(2022, 12, Faker.RandomNumber.Next(1, 30)).ToShortDateString(),
+                        PhoneNumber = "0994285796",
+                        Id = i + 1
+                    };
 
-                orders.Add(orderItem);
+                    orders.Add(orderItem);
+                }
             }
         }
 
@@ -32,20 +35,28 @@ namespace WaterOrderKP.Controllers
         public ActionResult Index(bool isAjax = false, string orderBy = "countbottle", bool desc = false)
         {
             var filteredOrders = orders;
+            OrderIndexModel model = new OrderIndexModel();
+           
 
             if (orderBy == "countbottle")
             {
 
                 filteredOrders = desc ? orders.OrderBy(order => order.CountBottle).ToList() 
                     : orders.OrderByDescending(order => order.CountBottle).ToList();
+
+                model.IsBottleCountDesc = desc;
             }
+
+            model.Orders = filteredOrders;
 
             if (isAjax)
             {
-                return View("~/Views/Partials/IndexTable.cshtml", filteredOrders);
+
+                return View("~/Views/Partials/IndexTable.cshtml", model);
             }
-          
-            return View(filteredOrders);
+
+           
+            return View(model);
         }
 
         // GET: OrderController/Details/5

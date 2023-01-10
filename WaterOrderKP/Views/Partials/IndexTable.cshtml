@@ -1,42 +1,40 @@
-﻿@model IEnumerable<WaterOrderKP.Models.OrderItem>
+﻿@model OrderIndexModel
 @{
     Layout = null;
 }
 <table class="table">
-
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Id)
+                @Html.DisplayNameFor(model => model.Orders.FirstOrDefault().Id)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.OrderDate)
+                @Html.DisplayNameFor(model => model.Orders.FirstOrDefault().OrderDate)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Name)
+                @Html.DisplayNameFor(model => model.Orders.FirstOrDefault().Name)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.PhoneNumber)
+                @Html.DisplayNameFor(model => model.Orders.FirstOrDefault().PhoneNumber)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Address)
+                @Html.DisplayNameFor(model => model.Orders.FirstOrDefault().Address)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Comment)
+                @Html.DisplayNameFor(model => model.Orders.FirstOrDefault().Comment)
             </th>
             <th>
                 <a href="javascript:void(0);" id="bottleCount" onclick="sortBottles()">
                     Count Bottle
-                    <span class="arrow-down" id="arrow-element"></span>
+                    <span class="@(Model.IsBottleCountDesc? "arrow-up" : "arrow-down")" id="arrow-element"></span>
                 </a>
-
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
 
-        @foreach (var item in Model)
+        @foreach (var item in  Model.Orders)
         {
 
             <tr>
