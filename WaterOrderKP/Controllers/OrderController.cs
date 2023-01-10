@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.VisualBasic.FileIO;
+﻿using Microsoft.AspNetCore.Mvc;
 using WaterOrderKP.Models;
 
 namespace WaterOrderKP.Controllers
@@ -9,11 +7,13 @@ namespace WaterOrderKP.Controllers
     {
         public static List<OrderItem> orders = new List<OrderItem>();
 
+        private readonly int _countItemOnThePage = 15;
+
         public OrderController()
         {
             if (!orders.Any())
             {
-                for (int i = 0; i < 15; i++)
+                for (int i = 0; i < 150; i++)
                 {
                     var orderItem = new OrderItem
                     {
@@ -32,11 +32,21 @@ namespace WaterOrderKP.Controllers
         }
 
         // GET: OrderController
-        public ActionResult Index(bool isAjax = false, string orderBy = "countbottle", bool desc = false)
+        public ActionResult Index(bool isAjax = false, string orderBy = "countbottle", bool desc = false, int currentPage = 1)
         {
             var filteredOrders = orders;
             OrderIndexModel model = new OrderIndexModel();
-           
+
+            var totalPages = (int)Math.Ceiling(orders.Count() / (double)_countItemOnThePage);
+            model.AmountOfPage = totalPages;
+
+            int skipItems = 0;
+
+            if (currentPage != 1)
+            {
+                skipItems = (currentPage - 1) * _countItemOnThePage;
+            }
+
 
             if (orderBy == "countbottle")
             {
@@ -47,7 +57,7 @@ namespace WaterOrderKP.Controllers
                 model.IsBottleCountDesc = desc;
             }
 
-            model.Orders = filteredOrders;
+            model.Orders = filteredOrders.Skip(skipItems).Take(_countItemOnThePage).ToList(); ;
 
             // TODO: it's just for simulation api request or long time calculation on server 
             // need to demonstrate how works spinner
