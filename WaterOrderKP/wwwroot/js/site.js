@@ -13,14 +13,18 @@
         element.classList.add("arrow-down");
     }
 
+
     $.ajax({
         url: '/order/index?isAjax=true&orderBy=countbottle&desc='+isArrowDown,
        // data: itemsData,
         success: function (result) {
             $('#indexTable').html(result);
         },
+        beforeSend: function () {
+            $('.lds-roller').show();
+        },
         complete: function () {
-            
+            $('.lds-roller').hide();
         }
     });
 

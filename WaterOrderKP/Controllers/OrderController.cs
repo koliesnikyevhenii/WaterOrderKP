@@ -49,6 +49,11 @@ namespace WaterOrderKP.Controllers
 
             model.Orders = filteredOrders;
 
+            // TODO: it's just for simulation api request or long time calculation on server 
+            // need to demonstrate how works spinner
+
+            Thread.Sleep(2000);
+
             if (isAjax)
             {
 
