@@ -177,5 +177,15 @@ namespace WaterOrderKP.Controllers
                 return View();
             }
         }
+
+
+
+        // POST: OrderController/Edit/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult MakeOrder(string ordersIds)
+        {
+            return Ok();
+        }
     }
 }

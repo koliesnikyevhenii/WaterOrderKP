@@ -32,3 +32,30 @@
 
     // update block on page
 }
+
+function makeOrder() {
+
+    if ($("#makeOrderComment") != null && $("#makeOrderComment").val() != "") {
+       
+        // send request ;
+        $('.modal-footer .btn-secondary').click()
+
+        $('#indexTable input:checked').each(function(e) {
+            console.log($(this).attr("id"));
+            // strs;
+            //TODO: make in one line
+            // SEND post jqury ajax request to u end point
+            //$.ajax({
+            //    type: "POST",
+            //    url: url,     //url it's
+            //    data: {"ordersIds" : strs },
+            //    success: success,
+            //    dataType: dataType
+            //});
+        });
+
+        return;
+    }
+    $("#make-ord-error").text("Missed comment");
+    // fill text 
+}
