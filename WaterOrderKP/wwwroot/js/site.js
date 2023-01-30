@@ -35,32 +35,43 @@
 
 function makeOrder() {
    
-
     if ($("#makeOrderComment") != null && $("#makeOrderComment").val() != "") {
-        var comment = $("#makeOrderComment").val();
+        var comments = $("#makeOrderComment").val();
         // send request ;
         $('.modal-footer .btn-secondary').click()
 
         $('#indexTable input:checked').each(function (e) {
             var strs = ($(this).attr("id"))
-            
+
+            var request = {
+                ordersIds: strs,
+                comment: comments
+            };           
+       
+
+            console.log(request);
+
             $.ajax({
                 type: "POST",
                 url: '/order/makeorder',
-                data: { "ordersIds": strs, "comment": comment },
-                dataType: "application/json",
+                data: JSON.stringify(request),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                headers: {                  
+                    'Content-Type': 'application/json'
+                },
                 success: function (data) {
-                    console.log(`success`);
+                    $('#indexTable').html(result);
                 },
                 error: function (data) {
-                    console.error(`make order errror`);
+                    console.error('make order errror');
                 }
-
             });
         });
 
         return;
     }
+
     $("#make-ord-error").text("Missed comment");
     // fill text 
 }

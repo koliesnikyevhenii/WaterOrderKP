@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using WaterOrderKP.Models;
+using static NuGet.Packaging.PackagingConstants;
 
 namespace WaterOrderKP.Controllers
 {
+   
     public class OrderController : Controller
     {
         public static List<OrderItem> orders = new List<OrderItem>();
@@ -182,9 +184,12 @@ namespace WaterOrderKP.Controllers
 
         // POST: OrderController/Edit/5
         [HttpPost]
-        public ActionResult MakeOrder(string ordersIds, string comment)
+        public ActionResult MakeOrder([FromBody] MakeOrderModel model)
         {
-            return Ok();
+            var deliveredOrderIds = model.ordersIds.Replace("makeOrder_", "").Split(';');
+            orders.Where(order => deliveredOrderIds.Contains(order.Id.ToString())).ToList().ForEach(order => order.IsDelivered = true);
+
+            return Index(true);
         }
     }
 }

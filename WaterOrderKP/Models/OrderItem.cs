@@ -2,9 +2,9 @@
 
 namespace WaterOrderKP.Models
 {
-  
+
     public class OrderItem
-    {      
+    {
         public int Id { get; set; }
 
         [Display(Name = "Order Date")]
@@ -15,7 +15,7 @@ namespace WaterOrderKP.Models
 
         [Phone]
         [StringLength(15, ErrorMessage = "PhoneNumber length can't be more than 15.")]
-        [Display(Name= "Phone Number")]
+        [Display(Name = "Phone Number")]
         public string PhoneNumber { get; set; }
 
         [StringLength(200, ErrorMessage = "Address length can't be more than 200.")]
@@ -28,5 +28,6 @@ namespace WaterOrderKP.Models
         [Range(0, 50)]
         [Display(Name = "Count Bottle")]
         public int CountBottle { get; set; }
+        public bool IsDelivered { get; set; }
     }
 }

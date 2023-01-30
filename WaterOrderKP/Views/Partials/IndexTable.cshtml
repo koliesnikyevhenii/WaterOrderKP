@@ -66,13 +66,26 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.CountBottle)
                 </td>
-                <td>
-                    @Html.ActionLink("Edit Order", "Edit", new { id = item.Id},  new {@class = "btn btn-info"})
-                    @Html.ActionLink("Details Order", "Details", new { id = item.Id }, new {@class = "btn btn-danger"}) |
-                    @Html.ActionLink("Delete Order", "Delete", new {id = item.Id }, new {@class = "btn btn-success"})
-                </td>
-                <td><input type="checkbox" class="" id="makeOrder_@item.Id"/>                             
-                </td>
+
+                @if (!item.IsDelivered)
+                {
+                    <td>
+
+                        @Html.ActionLink("Edit Order", "Edit", new { id = item.Id},  new {@class = "btn btn-info"})
+                        @Html.ActionLink("Details Order", "Details", new { id = item.Id }, new {@class = "btn btn-danger"}) |
+                        @Html.ActionLink("Delete Order", "Delete", new {id = item.Id }, new {@class = "btn btn-success"})
+                    </td>
+                    <td>
+                        <input type="checkbox" class="" id="makeOrder_@item.Id" />
+                    </td>
+                }else
+                {
+                     <td>
+                         </td>
+                    <td>
+                    </td>
+                }
+            
             </tr>
         }
 
