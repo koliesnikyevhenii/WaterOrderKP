@@ -182,8 +182,7 @@ namespace WaterOrderKP.Controllers
 
         // POST: OrderController/Edit/5
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult MakeOrder(string ordersIds)
+        public ActionResult MakeOrder(string ordersIds, string comment)
         {
             return Ok();
         }

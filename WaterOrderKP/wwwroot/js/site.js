@@ -34,24 +34,29 @@
 }
 
 function makeOrder() {
+   
 
     if ($("#makeOrderComment") != null && $("#makeOrderComment").val() != "") {
-       
+        var comment = $("#makeOrderComment").val();
         // send request ;
         $('.modal-footer .btn-secondary').click()
 
-        $('#indexTable input:checked').each(function(e) {
-            console.log($(this).attr("id"));
-            // strs;
-            //TODO: make in one line
-            // SEND post jqury ajax request to u end point
-            //$.ajax({
-            //    type: "POST",
-            //    url: url,     //url it's
-            //    data: {"ordersIds" : strs },
-            //    success: success,
-            //    dataType: dataType
-            //});
+        $('#indexTable input:checked').each(function (e) {
+            var strs = ($(this).attr("id"))
+            
+            $.ajax({
+                type: "POST",
+                url: '/order/makeorder',
+                data: { "ordersIds": strs, "comment": comment },
+                dataType: "application/json",
+                success: function (data) {
+                    console.log(`success`);
+                },
+                error: function (data) {
+                    console.error(`make order errror`);
+                }
+
+            });
         });
 
         return;
