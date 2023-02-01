@@ -116,7 +116,6 @@ namespace WaterOrderKP.Controllers
         public ActionResult Edit(int id)
         {
             var oder = orders.FirstOrDefault(x => x.Id == id);
-
             return View(oder);
         }
 
@@ -188,8 +187,14 @@ namespace WaterOrderKP.Controllers
         {
             var deliveredOrderIds = model.ordersIds.Replace("makeOrder_", "").Split(';');
             orders.Where(order => deliveredOrderIds.Contains(order.Id.ToString())).ToList().ForEach(order => order.IsDelivered = true);
-
+            
             return Index(true);
+        }
+        public ActionResult RejectOrder(int id)
+        {
+            var order = orders.FirstOrDefault(x => x.Id == id);
+            order.IsDelivered =false;
+            return Details(id);
         }
     }
 }
