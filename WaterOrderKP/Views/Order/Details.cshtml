@@ -7,6 +7,13 @@
 
 <h1>Details</h1>
 
+@if (Model.IsDelivered)
+{
+    <button onclick="renderOrder(@Model.Id)" class="btn btn-primary">
+        Reject Order
+    </button>
+}
+
 <div>
     <h4>OrderItem</h4>
     <hr />

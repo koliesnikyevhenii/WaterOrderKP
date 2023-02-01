@@ -75,3 +75,18 @@ function makeOrder() {
     $("#make-ord-error").text("Missed comment");
     // fill text 
 }
+function renderOrder(ids)
+{
+    $.ajax({
+
+        url: '/order/rejectorder?id='+ids,
+        success: function (data) {
+            $('#indexTable').html(result);
+        },
+        error: function (data) {
+            console.error('make order errror');
+        }
+    });
+    
+
+}
