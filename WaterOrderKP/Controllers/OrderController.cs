@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using WaterOrderKP.Models;
+using WaterOrderKP.Services;
 using static NuGet.Packaging.PackagingConstants;
 
 namespace WaterOrderKP.Controllers
@@ -10,6 +11,8 @@ namespace WaterOrderKP.Controllers
         public static List<OrderItem> orders = new List<OrderItem>();
 
         private readonly int _countItemOnThePage = 15;
+
+        private readonly string smsText = "Hello {0}, you water coming to yuo!";
 
         public OrderController()
         {
@@ -24,9 +27,18 @@ namespace WaterOrderKP.Controllers
                         CountBottle = Faker.RandomNumber.Next(1, 20),
                         Name = Faker.Name.FullName(),
                         OrderDate = new DateTime(2022, 12, Faker.RandomNumber.Next(1, 30)).ToShortDateString(),
-                        PhoneNumber = "0994285796",
+                      
                         Id = i + 1
                     };
+
+                    if (i % 2 == 0)
+                    {
+                        orderItem.PhoneNumber = "+380981731016";
+                    }
+                    else
+                    {
+                        orderItem.PhoneNumber = "+380508092413";
+                    }
 
                     orders.Add(orderItem);
                 }
@@ -188,6 +200,17 @@ namespace WaterOrderKP.Controllers
         {
             var deliveredOrderIds = model.ordersIds.Replace("makeOrder_", "").Split(';');
             orders.Where(order => deliveredOrderIds.Contains(order.Id.ToString())).ToList().ForEach(order => order.IsDelivered = true);
+
+            var fakeOrder = orders.FirstOrDefault();
+
+            if (fakeOrder != null)
+            {
+                var sms = string.Format(smsText, fakeOrder.Name);
+                var phone = fakeOrder.PhoneNumber;
+
+                KpSmsService smsService = new KpSmsService();
+                smsService.SendSms(phone, sms);
+            }
 
             return Index(true);
         }

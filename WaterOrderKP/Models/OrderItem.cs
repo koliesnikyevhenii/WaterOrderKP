@@ -29,5 +29,7 @@ namespace WaterOrderKP.Models
         [Display(Name = "Count Bottle")]
         public int CountBottle { get; set; }
         public bool IsDelivered { get; set; }
+
+        
     }
 }
