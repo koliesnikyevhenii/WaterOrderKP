@@ -1,5 +1,8 @@
 ﻿using Twilio;
 using Twilio.Rest.Api.V2010.Account;
+using Microsoft.Extensions.Configuration;
+using WaterOrderKP.Models;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace WaterOrderKP.Services
 {
@@ -14,10 +17,11 @@ namespace WaterOrderKP.Services
         {
             // Find your Account SID and Auth Token at twilio.com/console
             // and set the environment variables. See http://twil.io/secure
-            string accountSid = "AC9a711510044ffbc989c03010ff3c8216";
-            string authToken = "9c09d2e490d1e323de3b979e8b8ea6bd";
-            string fromTel = "+15175505876";
-            tel = "+380508092413";
+            var configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
+            var accountSid = configuration.GetValue<string>("SmsSendingData:AccountSid");
+            var authToken = configuration.GetValue<string>("SmsSendingData:AuthToken");
+            var fromTel = configuration.GetValue<string>("SmsSendingData:FromTel");
+            tel = "+380981731016";
 
             TwilioClient.Init(accountSid, authToken);
 
@@ -26,8 +30,6 @@ namespace WaterOrderKP.Services
                 from: new Twilio.Types.PhoneNumber(fromTel),
                 to: new Twilio.Types.PhoneNumber(tel)
             );
-
-
         }
     }
 }
