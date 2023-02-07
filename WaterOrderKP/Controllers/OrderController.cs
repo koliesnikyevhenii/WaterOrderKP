@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using WaterOrderKP.Models;
 using WaterOrderKP.Services;
 using static NuGet.Packaging.PackagingConstants;
@@ -11,8 +12,6 @@ namespace WaterOrderKP.Controllers
         public static List<OrderItem> orders = new List<OrderItem>();
 
         private readonly int _countItemOnThePage = 15;
-
-        private readonly string smsText = "Hello {0}, you water coming to yuo!";
 
         public OrderController()
         {
@@ -191,8 +190,6 @@ namespace WaterOrderKP.Controllers
             }
         }
 
-
-
         // POST: OrderController/Edit/5
         [HttpPost]
         public ActionResult MakeOrder([FromBody] MakeOrderModel model)
@@ -204,6 +201,8 @@ namespace WaterOrderKP.Controllers
 
             if (fakeOrder != null)
             {
+                var configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
+                var smsText = configuration.GetValue<string>("SmsSendingData:TextSms");
                 var sms = string.Format(smsText, fakeOrder.Name);
                 var phone = fakeOrder.PhoneNumber;
 
