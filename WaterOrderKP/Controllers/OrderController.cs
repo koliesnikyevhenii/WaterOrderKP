@@ -1,12 +1,13 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
+using Twilio.Types;
 using WaterOrderKP.Models;
 using WaterOrderKP.Services;
 using static NuGet.Packaging.PackagingConstants;
 
 namespace WaterOrderKP.Controllers
 {
-   
+
     public class OrderController : Controller
     {
         public static List<OrderItem> orders = new List<OrderItem>();
@@ -26,18 +27,19 @@ namespace WaterOrderKP.Controllers
                         CountBottle = Faker.RandomNumber.Next(1, 20),
                         Name = Faker.Name.FullName(),
                         OrderDate = new DateTime(2022, 12, Faker.RandomNumber.Next(1, 30)).ToShortDateString(),
-                      
+
                         Id = i + 1
                     };
 
-                    if (i % 2 == 0)
-                    {
-                        orderItem.PhoneNumber = "+380981731016";
-                    }
-                    else
-                    {
-                        orderItem.PhoneNumber = "+380508092413";
-                    }
+                    orderItem.PhoneNumber = Faker.Phone.Number();
+                    //if (i % 2 == 0)
+                    //{
+                    //    orderItem.PhoneNumber = "+380981731016";
+                    //}
+                    //else
+                    //{
+                    //    orderItem.PhoneNumber = "+380508092413";
+                    //}
 
                     orders.Add(orderItem);
                 }
@@ -45,7 +47,7 @@ namespace WaterOrderKP.Controllers
         }
 
         // GET: OrderController
-        public ActionResult Index(bool isAjax = false, string orderBy = "countbottle", bool desc = false, int currentPage = 1)
+        public ActionResult Index(bool isAjax = false, string orderBy = "countbottle", bool desc = false, int currentPage = 1, string phoneNumber = "")
         {
             var filteredOrders = orders;
             OrderIndexModel model = new OrderIndexModel();
@@ -60,17 +62,23 @@ namespace WaterOrderKP.Controllers
                 skipItems = (currentPage - 1) * _countItemOnThePage;
             }
 
+        
 
             if (orderBy == "countbottle")
             {
 
-                filteredOrders = desc ? orders.OrderBy(order => order.CountBottle).ToList() 
+                filteredOrders = desc ? orders.OrderBy(order => order.CountBottle).ToList()
                     : orders.OrderByDescending(order => order.CountBottle).ToList();
 
                 model.IsBottleCountDesc = desc;
             }
 
-            model.Orders = filteredOrders.Skip(skipItems).Take(_countItemOnThePage).ToList(); ;
+            if (!string.IsNullOrEmpty(phoneNumber))
+            {
+                filteredOrders = orders.Where(order => order.PhoneNumber.Equals(phoneNumber)).ToList();
+            }
+
+            model.Orders = filteredOrders.Skip(skipItems).Take(_countItemOnThePage).ToList(); 
 
             // TODO: it's just for simulation api request or long time calculation on server 
             // need to demonstrate how works spinner
@@ -83,7 +91,7 @@ namespace WaterOrderKP.Controllers
                 return View("~/Views/Partials/IndexTable.cshtml", model);
             }
 
-           
+
             return View(model);
         }
 
@@ -194,6 +202,7 @@ namespace WaterOrderKP.Controllers
         [HttpPost]
         public ActionResult MakeOrder([FromBody] MakeOrderModel model)
         {
+            // TODO: find error
             var deliveredOrderIds = model.ordersIds.Replace("makeOrder_", "").Split(';');
             orders.Where(order => deliveredOrderIds.Contains(order.Id.ToString())).ToList().ForEach(order => order.IsDelivered = true);
 
@@ -206,8 +215,21 @@ namespace WaterOrderKP.Controllers
                 var sms = string.Format(smsText, fakeOrder.Name);
                 var phone = fakeOrder.PhoneNumber;
 
-                KpSmsService smsService = new KpSmsService();
-                smsService.SendSms(phone, sms);
+                // TODO: get from setting
+                var isEnableSmsSetting = true;
+
+                try
+                {
+                    if (isEnableSmsSetting)
+                    {
+                        KpSmsService smsService = new KpSmsService();
+                        smsService.SendSms(phone, sms);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    return Index(true);
+                }
             }
 
             return Index(true);
@@ -215,8 +237,17 @@ namespace WaterOrderKP.Controllers
         public ActionResult RejectOrder(int id)
         {
             var order = orders.FirstOrDefault(x => x.Id == id);
-            order.IsDelivered =false;
+            order.IsDelivered = false;
             return Details(id);
+        }
+
+        public List<string> OrdersPhone(string term)
+        {
+             List<string> phoneNumbers = new List<string>();
+             phoneNumbers = orders.Where(order => order.PhoneNumber.Contains(term))
+                                   .Select(x => x.PhoneNumber).ToList();
+
+            return phoneNumbers;
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿function sortBottles() {
+﻿function sortBottles(phoneNumber) {
 
     var element = document.getElementById('arrow-element');
     var isArrowDown = element.classList.contains('arrow-down');
@@ -13,9 +13,14 @@
         element.classList.add("arrow-down");
     }
 
+    console.log(phoneNumber)
+    var phone = phoneNumber != null ? phoneNumber : "";
+
+    var actionUrl = '/order/index?isAjax=true&phoneNumber=' + phone  + '&orderBy=countbottle&desc=' + isArrowDown;
+    console.log(actionUrl);
 
     $.ajax({
-        url: '/order/index?isAjax=true&orderBy=countbottle&desc='+isArrowDown,
+        url: actionUrl,
        // data: itemsData,
         success: function (result) {
             $('#indexTable').html(result);
