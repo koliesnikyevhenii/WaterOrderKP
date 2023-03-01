@@ -1,5 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Faker;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
+using System.Net;
+using System.Reflection;
+using System.Text.Json;
 using Twilio.Types;
 using WaterOrderKP.Models;
 using WaterOrderKP.Services;
@@ -11,11 +16,22 @@ namespace WaterOrderKP.Controllers
     public class OrderController : Controller
     {
         public static List<OrderItem> orders = new List<OrderItem>();
-
+        public static List<CountriesInfo> countries= new List<CountriesInfo>();
         private readonly int _countItemOnThePage = 15;
+        
 
         public OrderController()
         {
+            string fileName = "countryInfo.json";
+            if (!countries.Any())
+            {
+                var path = Path.Combine(Environment.CurrentDirectory, fileName);
+                string jsonCountries = System.IO.File.ReadAllText(path);
+                countries = System.Text.Json.JsonSerializer.Deserialize<CountriesInfo[]>(jsonCountries).ToList();
+            }
+            
+            
+
             if (!orders.Any())
             {
                 for (int i = 0; i < 150; i++)
@@ -215,9 +231,8 @@ namespace WaterOrderKP.Controllers
                 var sms = string.Format(smsText, fakeOrder.Name);
                 var phone = fakeOrder.PhoneNumber;
 
-                // TODO: get from setting
-                var isEnableSmsSetting = true;
-
+                var isEnableSmsSetting = configuration.GetValue<bool>("IsEnable");
+                
                 try
                 {
                     if (isEnableSmsSetting)
@@ -248,6 +263,35 @@ namespace WaterOrderKP.Controllers
                                    .Select(x => x.PhoneNumber).ToList();
 
             return phoneNumbers;
+        }
+
+        public ActionResult Homework()
+        {
+            return View("~/Views/Order/Homework.cshtml");
+        }
+
+        public List<string> CountryHW(string term, string countryss)
+        {
+            List<string> country = new List<string>();
+            if (term != null)
+            {
+               country = countries.Where(country => country.country.Contains(term))
+                                  .Select(x => x.country).ToList();
+            }
+            return country;
+        }
+
+
+        public ActionResult GetCapital(string country)
+        {
+            var filteredCountries = countries;
+            if (!string.IsNullOrEmpty(country))
+            {
+                filteredCountries = countries.Where(countries => countries.country.Equals(country)).ToList();
+            }
+            CountriesInfo model = filteredCountries[0];
+
+            return View("~/Views/Partials/HomeworkTable.cshtml", model);
         }
     }
 }

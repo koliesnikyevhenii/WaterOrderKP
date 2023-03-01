@@ -1,0 +1,16 @@
+﻿@model CountriesInfo
+@{
+    ViewData["Title"] = "Homework";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <p>
+        <label for="autocomplete">Select a programming language: </label>
+        <input id="autocompleteCountry">
+    </p>
+</div>
+<div id="homeworkTable">
+    @Html.Partial("~/Views/Partials/HomeworkTable.cshtml", Model)
+    
+</div>
