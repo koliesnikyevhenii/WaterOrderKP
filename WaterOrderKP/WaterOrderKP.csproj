@@ -16,4 +16,8 @@
     <PackageReference Include="Twilio" Version="6.2.2" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\WaterKpBisnessLayer\WaterKpBisnessLayer.csproj" />
+  </ItemGroup>
+
 </Project>

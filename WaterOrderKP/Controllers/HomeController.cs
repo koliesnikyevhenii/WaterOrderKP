@@ -23,7 +23,7 @@ namespace WaterOrderKP.Controllers
             return View();
         }
 
-        public IActionResult Test(OrderItem model)
+        public IActionResult Test(OrderItemModel model)
         {
             // = new OrderItem
             //{

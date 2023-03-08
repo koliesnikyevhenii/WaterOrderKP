@@ -3,7 +3,7 @@
 namespace WaterOrderKP.Models
 {
 
-    public class OrderItem
+    public class OrderItemModel
     {
         public int Id { get; set; }
 

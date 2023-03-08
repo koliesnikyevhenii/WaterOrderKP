@@ -1,50 +1,38 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
-using Twilio.Types;
+using WaterKpBisnessLayer.ModelsBL;
+using WaterKpBisnessLayer.Services;
 using WaterOrderKP.Models;
 using WaterOrderKP.Services;
-using static NuGet.Packaging.PackagingConstants;
 
 namespace WaterOrderKP.Controllers
 {
 
-    public class OrderController : Controller
+	public class OrderController : Controller
     {
-        public static List<OrderItem> orders = new List<OrderItem>();
-
         private readonly int _countItemOnThePage = 15;
+        private readonly List<OrderItemModel> orders;
 
         public OrderController()
         {
-            if (!orders.Any())
+            OrderService orderService = new OrderService();
+            orders = new List<OrderItemModel>();
+
+
+            List<OrderItemBL> ordersBL = orderService.GetAllOrders();
+
+
+			foreach (var or in ordersBL)
             {
-                for (int i = 0; i < 150; i++)
-                {
-                    var orderItem = new OrderItem
-                    {
-                        Address = Faker.Address.StreetAddress(true),
-                        Comment = Faker.Lorem.Sentence(),
-                        CountBottle = Faker.RandomNumber.Next(1, 20),
-                        Name = Faker.Name.FullName(),
-                        OrderDate = new DateTime(2022, 12, Faker.RandomNumber.Next(1, 30)).ToShortDateString(),
+                OrderItemModel order = new OrderItemModel();
+                order.Address = or.Address;
+                order.PhoneNumber = or.Telephone;
+                order.Comment = or.Comment;
+                // todo: finish with it
 
-                        Id = i + 1
-                    };
-
-                    orderItem.PhoneNumber = Faker.Phone.Number();
-                    //if (i % 2 == 0)
-                    //{
-                    //    orderItem.PhoneNumber = "+380981731016";
-                    //}
-                    //else
-                    //{
-                    //    orderItem.PhoneNumber = "+380508092413";
-                    //}
-
-                    orders.Add(orderItem);
-                }
+                orders.Add(order);
             }
-        }
+           
+		}
 
         // GET: OrderController
         public ActionResult Index(bool isAjax = false, string orderBy = "countbottle", bool desc = false, int currentPage = 1, string phoneNumber = "")
@@ -111,7 +99,7 @@ namespace WaterOrderKP.Controllers
         // POST: OrderController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(OrderItem item)
+        public ActionResult Create(OrderItemModel item)
         {
             if (!ModelState.IsValid)
             {

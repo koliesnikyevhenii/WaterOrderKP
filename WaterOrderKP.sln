@@ -3,7 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.3.32929.385
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WaterOrderKP", "WaterOrderKP\WaterOrderKP.csproj", "{0CBB2F37-FADE-4AAF-98E8-748A896E2406}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WaterOrderKP", "WaterOrderKP\WaterOrderKP.csproj", "{0CBB2F37-FADE-4AAF-98E8-748A896E2406}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WaterKpBisnessLayer", "WaterKpBisnessLayer\WaterKpBisnessLayer.csproj", "{7006E9BB-B560-4252-97E5-F07DA8DEC3CA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DAL", "DAL\DAL.csproj", "{14C8FAC5-4E2F-46E3-9976-9C6F8A7B9CDF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +19,14 @@ Global
 		{0CBB2F37-FADE-4AAF-98E8-748A896E2406}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0CBB2F37-FADE-4AAF-98E8-748A896E2406}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0CBB2F37-FADE-4AAF-98E8-748A896E2406}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7006E9BB-B560-4252-97E5-F07DA8DEC3CA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7006E9BB-B560-4252-97E5-F07DA8DEC3CA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7006E9BB-B560-4252-97E5-F07DA8DEC3CA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7006E9BB-B560-4252-97E5-F07DA8DEC3CA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{14C8FAC5-4E2F-46E3-9976-9C6F8A7B9CDF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{14C8FAC5-4E2F-46E3-9976-9C6F8A7B9CDF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{14C8FAC5-4E2F-46E3-9976-9C6F8A7B9CDF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{14C8FAC5-4E2F-46E3-9976-9C6F8A7B9CDF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
