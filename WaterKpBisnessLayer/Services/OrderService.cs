@@ -1,4 +1,5 @@
-﻿using DAL;
+﻿using AutoMapper;
+using DAL;
 using WaterKpBisnessLayer.ModelsBL;
 
 namespace WaterKpBisnessLayer.Services
@@ -14,19 +15,27 @@ namespace WaterKpBisnessLayer.Services
 	{
 		public static List<OrderItemBL> orders = new List<OrderItemBL>();
         private OrderRepository orderRepository = new OrderRepository();
+		private readonly IMapper _mapper;
+
+		public OrderService() 
+		{
+			var mapperConfig = new MapperConfiguration(mc =>
+			{
+				mc.AddProfile(new AutomapperProfileBL());
+
+			});
+
+			_mapper = mapperConfig.CreateMapper();
+		}
 
         public List<OrderItemBL> GetAllOrders()
         {
 
 			var ordersDal =  orderRepository.GetAllOrders();
+
 			foreach (var or in ordersDal)
 			{
-				OrderItemBL order = new OrderItemBL();
-				order.Address = or.Address;
-				order.Telephone = or.Telephone;
-				order.Comment = or.Comment;
-				// todo: finish with it
-
+				var order = _mapper.Map<OrderItemBL>(or);
 				orders.Add(order);
 			}
 

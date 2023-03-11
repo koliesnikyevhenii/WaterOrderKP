@@ -3,7 +3,8 @@
 namespace DAL
 {
 	public interface IOrderRepository
-	{ 
+	{
+	   List<OrderItem> GetAllOrders();
 	}
 	public class OrderRepository
 	{

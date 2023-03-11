@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using WaterKpBisnessLayer.ModelsBL;
 using WaterKpBisnessLayer.Services;
 using WaterOrderKP.Models;
@@ -11,10 +12,21 @@ namespace WaterOrderKP.Controllers
     {
         private readonly int _countItemOnThePage = 15;
         private readonly List<OrderItemModel> orders;
+		private readonly IMapper _mapper;
 
-        public OrderController()
+		public OrderController()
         {
-            OrderService orderService = new OrderService();
+
+			var mapperConfig = new MapperConfiguration(mc =>
+			{
+				mc.AddProfile(new MapperProfile());
+               
+			});
+
+            _mapper = mapperConfig.CreateMapper();
+
+
+			OrderService orderService = new OrderService();
             orders = new List<OrderItemModel>();
 
 
@@ -23,12 +35,7 @@ namespace WaterOrderKP.Controllers
 
 			foreach (var or in ordersBL)
             {
-                OrderItemModel order = new OrderItemModel();
-                order.Address = or.Address;
-                order.PhoneNumber = or.Telephone;
-                order.Comment = or.Comment;
-                // todo: finish with it
-
+				var order = _mapper.Map<OrderItemModel>(or);			
                 orders.Add(order);
             }
            
